@@ -1,23 +1,21 @@
 {
-<<<<<<< HEAD
   "name": "Nexus Lab Environment",
   "build": { "dockerfile": "../Dockerfile" },
   "customizations": {
     "vscode": {
       "extensions": ["vscjava.vscode-java-pack"]
-=======
-  " name ": " Nexus Lab Environment ",
-  " image ": " mcr . microsoft . com / devcontainers / java :21 - bullseye ",
-  " workspaceFolder ": "/ workspaces /${ localWorkspaceFolderBasename }" ,
-  " updateRemoteUserUID ": true ,
-  " remoteUser ": " vscode " ,
-  " customizations ": {
-    " vscode ": { " extensions ": [" vscjava . vscode - java - pack "] }
+    }
   },
-  " features ": {
-    " ghcr . io / devcontainers / features / java :1": {
-      " version ": "21" , " installMaven ": " true ", " installGradle ": " true "
->>>>>>> faf9d190b214b9c872d49070db46c8c794296feb
+  "image": "mcr.microsoft.com/devcontainers/java:21 - bullseye",
+  "workspaceFolder": "/workspaces/${ localWorkspaceFolderBasename}" ,
+  "updateRemoteUserUID": true ,
+  "remoteUser": "vscode" ,
+  "customizations": {
+    "vscode": { " extensions ": ["vscjava.vscode - java - pack "] }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21" , " installMaven ": "true", "installGradle": "true"
     }
   }
 }
