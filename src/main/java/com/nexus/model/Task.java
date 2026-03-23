@@ -80,6 +80,10 @@ public class Task {
         this.status = TaskStatus.BLOCKED;
     }
 
+    public void setOwner(User user) {
+        this.owner = user;
+    }
+
     // Getters
     public int getId() { return id; }
     public TaskStatus getStatus() { return status; }
