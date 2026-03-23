@@ -7,7 +7,7 @@ import com.nexus.exception.NexusValidationException;
  * Representa uma tarefa no sistema Nexus.
  * Implementa regras de máquina de estados e telemetria global.
  */
-public class Task {
+public class Task {afdbdabda
     // Métricas Globais
     public static int totalTasksCreated = 0;
     public static int totalValidationErrors = 0;
