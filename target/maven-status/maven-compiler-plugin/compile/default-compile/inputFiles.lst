@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /workspaces/laboratorio1/src/main/java/com/nexus/Main.java
 /workspaces/laboratorio1/src/main/java/com/nexus/exception/NexusValidationException.java
 /workspaces/laboratorio1/src/main/java/com/nexus/model/Task.java
@@ -5,3 +6,12 @@
 /workspaces/laboratorio1/src/main/java/com/nexus/model/User.java
 /workspaces/laboratorio1/src/main/java/com/nexus/service/LogProcessor.java
 /workspaces/laboratorio1/src/main/java/com/nexus/service/Workspace.java
+=======
+/workspaces/Lab 01/laborat-rio-1-ducks2/src/main/java/com/nexus/Main.java
+/workspaces/Lab 01/laborat-rio-1-ducks2/src/main/java/com/nexus/exception/NexusValidationException.java
+/workspaces/Lab 01/laborat-rio-1-ducks2/src/main/java/com/nexus/model/Task.java
+/workspaces/Lab 01/laborat-rio-1-ducks2/src/main/java/com/nexus/model/TaskStatus.java
+/workspaces/Lab 01/laborat-rio-1-ducks2/src/main/java/com/nexus/model/User.java
+/workspaces/Lab 01/laborat-rio-1-ducks2/src/main/java/com/nexus/service/LogProcessor.java
+/workspaces/Lab 01/laborat-rio-1-ducks2/src/main/java/com/nexus/service/Workspace.java
+>>>>>>> faf9d190b214b9c872d49070db46c8c794296feb
