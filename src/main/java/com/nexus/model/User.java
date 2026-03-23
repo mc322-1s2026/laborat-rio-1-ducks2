@@ -1,5 +1,7 @@
 package com.nexus.model;
 import java.util.regex.Pattern;
+
+import com.nexus.service.UserManager;
 import com.nexus.service.Workspace;
 
 public class User {
