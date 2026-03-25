@@ -7,31 +7,18 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.nexus.exception.NexusValidationException;
+import com.nexus.model.Project;
 import com.nexus.model.Task;
 import com.nexus.model.User;
 import com.nexus.service.LogProcessor;
 import com.nexus.service.Workspace;
 
-/**
- * Ponto de entrada para a aplicação Nexus.
- * *
- * Esta classe fornece uma interface simples baseada em console usada no
- * trabalho de laboratório. Gerencia uma coleção de {@link User usuários}
- * e um {@link Workspace} onde as {@link Task tarefas} são armazenadas. As
- * operações são realizadas através de um laço de menu e delegadas a métodos
- * auxiliares.
- */
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static final Workspace workspace = new Workspace();
     private static final List<User> users = new ArrayList<>();
     private static final LogProcessor logProcessor = new LogProcessor();
 
-    /**
-     * Inicia a aplicação e processa comandos do usuário até a terminação.
-     *
-     * @param args argumentos de linha de comando (ignorados)
-     */
     public static void main(String[] args) {
         boolean running = true;
 
@@ -45,9 +32,10 @@ public class Main {
                     running = false;
                 }
                 case "1" -> addUser();
-                case "2" -> addTask();
-                case "3" -> listTasks();
-                case "4" -> {
+                case "2" -> addProject();
+                case "3" -> addTask();
+                case "4" -> listTasks();
+                case "5" -> {
                     System.out.println("1. Carregar Log V1 (Básico)\n2. Carregar Log V2 (Desafio)");
                     String logChoice = scanner.nextLine();
                     String file = (logChoice.equals("1")) ? "log_v1.txt" : "log_v2.txt";
@@ -58,29 +46,19 @@ public class Main {
         }
     }
 
-    /**
-     * Imprime o menu principal na saída padrão.
-     * <p>As opções do menu correspondem às escolhas tratadas em
-     * {@link #main(String[])}.
-     * </p>
-     */
     private static void displayMenu() {
         System.out.print("""
             
             ======= NEXUS CORE: MENU =======
             1. Adicionar Usuário
-            2. Adicionar Tarefa
-            3. Listar Todas as Tarefas
-            4. Processar Log de Ações
+            2. Adicionar Projeto
+            3. Adicionar Tarefa
+            4. Listar Todas as Tarefas
+            5. Processar Log de Ações
             0. Sair
             Escolha uma opção:\s""");
     }
 
-    /**
-     * Solicita ao usuário nome de usuário e email, cria um novo {@link User} e
-     * adiciona-o à lista interna. Exceções de validação são relatadas no
-     * fluxo de erro.
-     */
     private static void addUser() {
         try {
             System.out.print("Username: ");
@@ -96,19 +74,33 @@ public class Main {
         }
     }
 
-    /**
-     * Coleta detalhes da tarefa do usuário, constrói uma {@link Task} e
-     * a acrescenta ao workspace. Erros de parsing de data são informados no
-     * stderr.
-     */
+    private static void addProject() {
+        System.out.print("Nome do Projeto: ");
+        String name = scanner.nextLine();
+        System.out.print("Orçamento (horas): ");
+        int budget = Integer.parseInt(scanner.nextLine());
+
+        Project project = new Project(name, budget);
+        workspace.addProject(project);
+        System.out.println("[OK] Projeto criado: " + name);
+    }
+
     private static void addTask() {
         try {
             System.out.print("Título da Tarefa: ");
             String title = scanner.nextLine();
             System.out.print("Prazo (AAAA-MM-DD): ");
             LocalDate deadline = LocalDate.parse(scanner.nextLine());
+            System.out.print("Esforço estimado: ");
+            int effort = Integer.parseInt(scanner.nextLine());
+            System.out.print("Projeto vinculado: ");
+            String projectName = scanner.nextLine();
 
-            Task newTask = new Task(title, deadline, 0);
+            Task newTask = new Task(title, deadline, effort);
+            Project project = workspace.findProjectByName(projectName);
+            if (project != null) {
+                newTask.assignToProject(project);
+            }
             workspace.addTask(newTask);
             System.out.println("[OK] Tarefa adicionada ao backlog.");
         } catch (DateTimeParseException e) {
@@ -116,11 +108,6 @@ public class Main {
         }
     }
 
-    /**
-     * Exibe todas as tarefas atualmente armazenadas no {@link Workspace} em
-     * formato de tabela simples. Se não existirem tarefas, imprime uma mensagem
-     * de notificação.
-     */
     private static void listTasks() {
         List<Task> tasks = workspace.getTasks();
         if (tasks.isEmpty()) {
@@ -144,14 +131,6 @@ public class Main {
         System.out.println("Total de tarefas: " + Task.totalTasksCreated);
     }
 
-    /**
-     * Trunca uma string para um comprimento máximo, acrescentando reticências
-     * se ela for maior que o tamanho especificado.
-     *
-     * @param str a string a ser truncada (pode ser {@code null})
-     * @param tam o comprimento máximo permitido
-     * @return uma string possivelmente reduzida; nunca {@code null}
-     */
     private static String truncar(String str, int tam) {
         if (str == null) return "";
         return str.length() > tam ? str.substring(0, tam - 3) + "..." : str;
