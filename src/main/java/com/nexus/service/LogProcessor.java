@@ -5,6 +5,7 @@ import com.nexus.exception.NexusValidationException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import com.nexus.model.TaskStatus;
 
 public class LogProcessor {
 
@@ -37,6 +38,44 @@ public class LogProcessor {
                                 Task t = new Task(p[1], LocalDate.parse(p[2]),0);
                                 workspace.addTask(t);
                                 System.out.println("[LOG] Tarefa criada: " + p[1]);
+                            }
+                            case "ASSIGN_USER" -> {
+                                    User selectedUser = null;
+                                for (User user : users){
+                                    if (user.consultUsername().equals(p[1])){
+                                        selectedUser = user;
+                                        break;
+                                    }
+                                }
+
+                                if (selectedUser == null){
+                                    throw new NexusValidationException("Usuário não encontrado.");
+                                }
+
+                                boolean taskFound = false;
+
+                                for (Task task : workspace.getTasks()){
+                                    if (task.getId() == Integer.parseInt(p[2])){
+                                        task.setOwner(selectedUser);
+                                        System.out.println("[LOG] Tarefa " + p[2] + " designada para " + p[1] + " com sucesso.");
+                                        taskFound = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!taskFound){
+                                    throw new NexusValidationException("Tarefa não encontrada.");
+                                }
+                            }
+                            case "REPORT_STATUS" -> {
+                                List<String> topPerformers = workspace.topPerformers();
+                                System.out.println("Top performers: " + topPerformers);
+                                List<String> overloadedUsers = workspace.overloadedUsers();
+                                System.out.println("Usuários sobrecarregados: " + overloadedUsers);
+                                double projectHealth = workspace.projectHealth();
+                                System.out.println("Percentual de Conclusão: " + projectHealth + "%");
+                                TaskStatus globalBottleneck = workspace.globalBottleneck();
+                                System.out.println("Status com mais tarefas: " + globalBottleneck);
                             }
                             default -> System.err.println("[WARN] Ação desconhecida: " + action);
                         }

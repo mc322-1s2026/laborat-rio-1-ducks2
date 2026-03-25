@@ -1,7 +1,6 @@
 package com.nexus.model;
 import java.util.regex.Pattern;
 
-import com.nexus.service.UserManager;
 import com.nexus.service.Workspace;
 
 public class User {
@@ -33,7 +32,7 @@ public class User {
     public long calculateWorkload() {
         int taskcount = 0;
         for(Task task : User.workspace.getTasks()){
-            if (task.getOwner().consultUsername() == this.username && task.getStatus() == TaskStatus.IN_PROGRESS){
+            if (task.getOwner().consultUsername().equals(this.username) && task.getStatus() == TaskStatus.IN_PROGRESS){
                 taskcount++;
             }
         }
